@@ -1,5 +1,6 @@
 // AlgoDat Assignement 2 Binary find
 
+#include<fstream>
 #include<iostream>
 using namespace std;
 
@@ -8,7 +9,7 @@ using namespace std;
 //define node
 struct node {
 	int data; 
-	node* left; node* right;
+	node* lchild; node* rchild;
 };
 
 
@@ -16,7 +17,7 @@ struct node {
 node* emptyNode(int data) {
 	node* newNode = new node();
 	newNode -> data = data;
-	newNode -> left = newNode -> right = NULL;
+	newNode -> lchild = newNode -> rchild = NULL;
 	return newNode;
 }
 
@@ -27,15 +28,16 @@ node* fill(node* root,int data) {
 
 	}
 
-	//sort numbers into nodes. lesser into left 
+	//sort numbers into nodes. lesser into lchild 
 	else if(data <= root -> data) {
-		root ->left = fill(root-> left, data);
+		root ->lchild = fill(root-> lchild, data);
 	}
 
-	//bigger into right 
+	//bigger into rchild 
 	else {
-		root->right = fill(root -> right,data);
+		root->rchild = fill(root -> rchild,data);
 	}
+
 	return root;
 }
 
@@ -50,19 +52,26 @@ bool find(node* root,int data) {
 	}
 
 	else if(data <= root -> data) {
-		return find(root -> left, data);
+		return find(root -> lchild, data);
 	}
 
 	else {
-		return find(root -> right, data);
+		return find(root -> rchild, data);
 	}
 }
 
 
 
 
-void PrintBTS(){
+void PrintBST(){
+	ofstream dotfile;
+	std::remove ("Bintree.dot");
+	dotfile.open ("Bintree.dot");
+	dotfile << "digraph G {";
+	dotfile << 
+	dotfile.close();
 }
+
 
 
 //create tree an fill with hardcoded numbers
@@ -72,15 +81,17 @@ int main() {
     int userNum;
     
     node* root = NULL;
-    
+    cout << "Binary Search Tree"<< endl;
     cout << "How many numebrs?: " << endl;
     cin >> n;
     for(int i = 0; i < n; i++) {
+		cout << "Enter Number: " << endl;
         cin >> userNum;
         root=fill(root, userNum);
     }
     
 
+	cout << "Tree created" << endl;
 
 	/*node* root = NULL; 
 	root = fill(root,1);	
@@ -92,6 +103,9 @@ int main() {
 	root = fill(root,7);
 	root = fill(root,9);
 	root = fill(root,4);*/
+
+	/**/
+	PrintBST();
 
 	//number to be searched  
 	int userSearch;
